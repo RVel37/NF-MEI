@@ -1,3 +1,6 @@
+Note: this file (readme) currently consists of notes to myself. To be cleaned up and rewritten.
+
+
 # Data locations
  
 IGSR (international genome sample resource) - provides open data from range of sources including 1KGP.
