@@ -2,7 +2,7 @@ nextflow.enable.dsl = 2
 
 /* PARAMETERS */
 
-params.bam_dir   = "${baseDir}/data/bams"      // directory with .bam & .bai
+params.bam_dir   = "${baseDir}/bams"      // directory with .bam & .bai
 params.ref_dir   = "${baseDir}/reference"      // directory with reference genome
 params.truth_vcf = "${baseDir}/truth/benchmark.vcf.gz" // ground‑truth VCF
 params.outdir    = "${baseDir}/results"        // destination root
@@ -10,7 +10,7 @@ params.tools     = ['scramble']          // names of MEI tools to run
 
 /* CHANNELS */
 
-    include {SCRAMBLE} from './tasks/scramble.nf'
+include {SCRAMBLE} from './tasks/scramble.nf'
 
 workflow {
 
@@ -25,11 +25,8 @@ workflow {
         .map { bam, bai -> tuple(bam, bai, file(params.ref_dir), file(params.truth_vcf)) }
         .set { sample_input }
 
-    if (params.tools.contains('tool1'))
-
 
     // PROCESSES
-
     if(params.tools.contains('scramble'))
         SCRAMBLE(sample_input)
 

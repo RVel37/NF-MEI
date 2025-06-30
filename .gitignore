@@ -1,3 +1,6 @@
 bams/*
 reference/*
 truth/*
+.nextflow.log*
+.nextflow/
+results

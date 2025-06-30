@@ -2,32 +2,32 @@ Note: this file (readme) currently consists of notes to myself. To be cleaned up
 
 
 # Data locations
- 
+
 IGSR (international genome sample resource) - provides open data from range of sources including 1KGP.
 
- 
+
 https://www.internationalgenome.org/data
- 
- 
+
+
 https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/
- 
- 
+
+
 Readme for 1kgp phase 3 alignment pipeline (bwamem > samtools > gatk3 > cramtool)
 https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/README.1000genomes.GRCh38DH.alignment
- 
- 
+
+
 https://www.ncbi.nlm.nih.gov/dbvar/studies/nstd144/download/
 
 ----------------------------------
 # TEST DATA - FROM SCRAMBLE
 We are using scramble's `test.bam` and `test.bam.bai` files as test runs (to configure pipeline) for several reasons:
 
-Small and Fast: files cover small region (chr3:70,000,000-71,000,000), so they run quickly and are easy to handle.
-Reproducible: They are distributed with the tool, so anyone can use the same data for comparison or debugging.
-Known Output: Expected outputs are well-documented (see README.md), making it easy to check if pipeline and other MEI tools are working as expected.
+- Small and fast: files cover small region (chr3:70,000,000-71,000,000), so they run quickly and are easy to handle.
+- Reproducible: They are distributed with the tool, so anyone can use the same data for comparison or debugging.
+- Known output: Expected outputs are well-documented, making it easy to check if pipeline/other MEI tools are working as expected.
 
 Limitations:
-Test files are fine for basic benchmarking/testing pipeline, but won't represent real-world dataset size and complexity. For final benchmarking will also include larger and more diverse BAMs.
+Test files are fine for basic benchmarking/testing pipeline, but won't represent real-world dataset size and complexity. For final benchmarking will use the HG002 data + internal BAMs from NHS.
 
 
 # reference genome
@@ -36,6 +36,10 @@ wget https://storage.googleapis.com/gcp-public-data--broad-references/hg38/v0/Ho
 # docker
 Local: have to have pulled it first, before running
 DNAnexus: dont have to pull - will automatically fetch the required docker image if available on dockerhub
+
+# tracking time taken
+Nextflow comes wih in-built wall clock time and memory usage tracking. try:
+`nextflow run main.nf -with-report report.html -with-trace trace.txt -with-timeline timeline.html -with-dag flowchart.png`
 
 ----------------------------------
 # INTERACTIVE TESTS
@@ -68,5 +72,5 @@ Output (for `--eval-meis`):
 - tab delim txt file `test.clusters.txt` with clipped cluster consensus sequences
 - VCF (if `ref.fa` provided)
  
-
-
+ 30 June:
+Reference.fa for nextflow is currently test.fa provided in the scramble/validation directory. (`--ref ${ref_dir}/test.fa`) May want to change this to the standard GRCh38 reference? 
