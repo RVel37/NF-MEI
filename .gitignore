@@ -4,3 +4,4 @@ truth/*
 .nextflow.log*
 .nextflow/
 results
+work
