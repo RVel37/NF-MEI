@@ -75,9 +75,13 @@ Output (for `--eval-meis`):
  30 June:
 Reference.fa for nextflow is currently test.fa provided in the scramble/validation directory. (`--ref ${ref_dir}/test.fa`) May want to change this to the standard GRCh38 reference? 
 
-
-
-
+### SCRAMBLE ISSUES
+Had significant difficulty figuring out how to pass in the reference fasta file, despite channels working correctly. Turns out this issue was specific to how `SCRAMble.R` handles paths. Issue was resolved in slightly unorthodox way:
+```bash
+    # absolute path
+    fasta_file=\$(readlink -f "\$fasta_file")
+```
+Where we provide an absolute path within the script. Unsure if this will need further corrections for DNAnexus. 
 
 --------------------
 

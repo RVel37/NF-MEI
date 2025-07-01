@@ -18,13 +18,12 @@ process SCRAMBLE {
     """
     # find the fasta file among the staged reference files
     fasta_file=\$(ls ${ref_ch} | grep -E '\\.fa(sta)?\$' | head -n1)
+    [[ -z \$fasta_file ]] && { echo 'ERROR: no fasta'; exit 1; }
+    
+    # absolute path
+    fasta_file=\$(readlink -f "\$fasta_file")
 
-    if [[ -z "\$fasta_file" ]]; then
-      echo "ERROR: fasta file not found among reference files"
-      exit 1
-    fi
-
-    head -n 10 "\$fasta_file"
+    find / -name cluster_identifier 2>/dev/null
 
     ### Step 1: Run clustering on the input BAM file
     cluster_identifier $bam > ${bam.baseName}.clusters.txt
