@@ -74,3 +74,16 @@ Output (for `--eval-meis`):
  
  30 June:
 Reference.fa for nextflow is currently test.fa provided in the scramble/validation directory. (`--ref ${ref_dir}/test.fa`) May want to change this to the standard GRCh38 reference? 
+
+
+
+
+
+--------------------
+
+# NOTE FOR ACTUAL VALIDATION
+
+The HG002 BAMs are accessed from the NIH FTP site. Specifically these are the Illumina Novoalign 2x250, 75x BAMs.
+The readme states the GRCh38 reference file is available [here](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz)
+
+

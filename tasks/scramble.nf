@@ -1,29 +1,30 @@
-
 process SCRAMBLE {
-    // label will pull dynamic resource logic
-    //label 'mei'
-
     container 'swglh/scramble:1.0'
 
-    // tag printed in logs to identify which bam is being processed
     tag "${bam.baseName}"
-    
-    // outputs go here
+
     publishDir "${params.outdir}/scramble", mode: 'copy'
 
-    // inputs & outputs
     input:
-    tuple path(bam), path(bai), path(ref_dir), path(truth_vcf)
+    tuple path(bam), path(bai)
+    path(ref_ch) 
+    path(truth_vcf)
 
     output:
     file("${bam.baseName}.clusters.txt")
     file("${bam.baseName}.scramble.vcf")
-    // file("${bam.baseName}.metrics.txt")
 
+    script:
+    """
+    # find the fasta file among the staged reference files
+    fasta_file=\$(ls ${ref_ch} | grep -E '\\.fa(sta)?\$' | head -n1)
 
-    script: """
+    if [[ -z "\$fasta_file" ]]; then
+      echo "ERROR: fasta file not found among reference files"
+      exit 1
+    fi
 
-    find / -name cluster_identifier 2>/dev/null
+    head -n 10 "\$fasta_file"
 
     ### Step 1: Run clustering on the input BAM file
     cluster_identifier $bam > ${bam.baseName}.clusters.txt
@@ -34,18 +35,9 @@ process SCRAMBLE {
       --cluster-file \$(pwd)/${bam.baseName}.clusters.txt \\
       --install-dir /scramble/cluster_analysis/bin \\
       --mei-refs /scramble/cluster_analysis/resources/MEI_consensus_seqs.fa \\
-      --ref /scramble/validation/test.fa \\
-      --eval-dels \\
+      --ref "\$fasta_file" \\
       --eval-meis
-
-    find . -name 'test.vcf'
-    echo "Current dir contents:"
-    ls -l
-
-    echo "All files recursively:"
-    find . -type f
 
     mv ${bam.baseName}.vcf ${bam.baseName}.scramble.vcf
     """
-
 }
