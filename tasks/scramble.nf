@@ -35,7 +35,8 @@ process SCRAMBLE {
       --install-dir /scramble/cluster_analysis/bin \\
       --mei-refs /scramble/cluster_analysis/resources/MEI_consensus_seqs.fa \\
       --ref "\$fasta_file" \\
-      --eval-meis
+      --eval-meis  \\
+      --eval-dels 
 
     mv ${bam.baseName}.vcf ${bam.baseName}.scramble.vcf
     """

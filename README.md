@@ -41,6 +41,10 @@ DNAnexus: dont have to pull - will automatically fetch the required docker image
 Nextflow comes wih in-built wall clock time and memory usage tracking. try:
 `nextflow run main.nf -with-report report.html -with-trace trace.txt -with-timeline timeline.html -with-dag flowchart.png`
 
+# evaluating deletions
+Provided as optional arg by MELT, SCRAMble, ... 
+Choosing to add this in, despite NHS pipelines already having a dedicated CNV caller. MEIs often cause small deletions/rearrangements near insertion sites -> detecting deletions helps find breakpoints and improve MEI genotyping. As the tools carry out clustering and local assembly around candidate MEI sites, they may catch these deletions with greater accuracy than general CNV callers.
+
 ----------------------------------
 # INTERACTIVE TESTS
  
@@ -67,12 +71,11 @@ cluster_identifier    validation/test.bam > validation/test.clusters.txt
  
 Rscript --vanilla cluster_analysis/bin/SCRAMble.R     --out-name ${PWD}/test     --cluster-file ${PWD}/validation/test.clusters.txt --install-dir cluster_analysis/bin     --mei-refs ${PWD}/cluster_analysis/resources/MEI_consensus_seqs.fa     --ref ${PWD}/validation/test.fa     --eval-dels     --eval-meis
 ```
- 
-Output (for `--eval-meis`):
+Output:
 - tab delim txt file `test.clusters.txt` with clipped cluster consensus sequences
 - VCF (if `ref.fa` provided)
- 
- 30 June:
+
+30 June:
 Reference.fa for nextflow is currently test.fa provided in the scramble/validation directory. (`--ref ${ref_dir}/test.fa`) May want to change this to the standard GRCh38 reference? 
 
 ### SCRAMBLE ISSUES
