@@ -6,10 +6,11 @@ params.bam_dir   = "${baseDir}/bams"      // directory with .bam & .bai
 params.ref_dir   = "${baseDir}/reference"      // directory with reference genome
 params.truth_vcf = "${baseDir}/truth/test.vcf" // truth VCF
 params.outdir    = "${baseDir}/results"        // destination root
-params.tools     = ['scramble']          // names of MEI tools to run
+params.tools     = ['scramble','melt']          // names of MEI tools to run
 
 /* MODULE IMPORTS */
 include {SCRAMBLE} from './tasks/scramble.nf'
+include {MELT} from './tasks/melt.nf'
 
 workflow {
 
@@ -29,6 +30,9 @@ workflow {
 
     // PROCESSES
     if(params.tools.contains('scramble'))
-        SCRAMBLE(bam_pairs, ref_ch, truth_vcf_ch)
+        SCRAMBLE(bam_pairs, ref_ch)
+    
+    if(params.tools.contains('melt'))
+        MELT(bam_pairs, ref_ch)
 
 }

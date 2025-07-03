@@ -62,7 +62,7 @@ docker run -it --rm -v $(pwd)/data:/data swglh/scramble:1.0 bash
 ```
 Scramble provides test data: `test.bam` and `test.bam.bai`.
 
-## scramble is run in 2 parts
+### scramble is run in 2 parts
  
 Because of the way I ran it from inside the scramble directory, i had to use full paths for the 2nd part otherwise `SCRAMble.R` couldn't find the files - perhaps it ought to be run outside of the scramble directory.
  
@@ -85,6 +85,23 @@ Had significant difficulty figuring out how to pass in the reference fasta file,
     fasta_file=\$(readlink -f "\$fasta_file")
 ```
 Where we provide an absolute path within the script. Unsure if this will need further corrections for DNAnexus. 
+
+## MELT
+
+Concatenate all the MEI reference zip files
+```bash
+cat <<EOF > data/reference/mei_list.txt
+/MELT/MELTv2.0.5_patch/me_refs/Hg38/ALU_MELT.zip
+/MELT/MELTv2.0.5_patch/me_refs/Hg38/LINE1_MELT.zip
+/MELT/MELTv2.0.5_patch/me_refs/Hg38/SVA_MELT.zip
+EOF
+```
+```bash
+java -jar MELTv2.0.5_patch/MELT.jar Single -bamfile data/bams/test.bam -h data/reference/test.fa -t data/reference/mei_list.txt -w data/results/ -n MELTv2.0.5_patch/add_bed_files/Hg38/Hg38.genes.bed -c 30 -d 10000
+```
+NOTE: `-d 10000` flag used here solely because of the tiny data we are using for interactive tests. Tells MELT to include any contig >= 10 000 bp, default is 1 000 000 bp. SHOULD GET RID ENTIRELY FOR TESTING WGS/WES
+
+> Melt is closed-source and only free for research purposes!
 
 --------------------
 
