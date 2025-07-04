@@ -1,5 +1,6 @@
-Note: this file (readme) currently consists of notes to myself. To be cleaned up and rewritten.
+> This file (readme) currently consists of notes to myself. To be cleaned up and rewritten.
 
+Tools to include: Scramble, MELT, Mobster, DeepMEI, TEMP2, Xtea
 
 # Data locations
 
@@ -19,16 +20,20 @@ https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project
 https://www.ncbi.nlm.nih.gov/dbvar/studies/nstd144/download/
 
 ----------------------------------
-# TEST DATA - FROM SCRAMBLE
-We are using scramble's `test.bam` and `test.bam.bai` files as test runs (to configure pipeline) for several reasons:
+# General
+- Discordant reads: PE reads which don't align to ref genome in expected orientation/distance/location
+- Split reads: individual reads aligning to 2+ separate locations - indicates the presence of a breakpoint
 
+# TEST DATA
+We are using scramble's `test.bam` and `test.bam.bai` files as test runs (to configure pipeline) for several reasons:
 - Small and fast: files cover small region (chr3:70,000,000-71,000,000), so they run quickly and are easy to handle.
 - Reproducible: They are distributed with the tool, so anyone can use the same data for comparison or debugging.
 - Known output: Expected outputs are well-documented, making it easy to check if pipeline/other MEI tools are working as expected.
 
 Limitations:
-Test files are fine for basic benchmarking/testing pipeline, but won't represent real-world dataset size and complexity. For final benchmarking will use the HG002 data + internal BAMs from NHS.
+Test files are fine for basic benchmarking/testing pipeline, but won't represent real-world dataset size and complexity. **Will use a 1kGP Exome for further testing, as the reference genome provided by scramble's validation directory appears to be incompatible with MELT.**
 
+For final benchmarking will use the HG002 data + internal BAMs from NHS.
 
 # reference genome
 wget https://storage.googleapis.com/gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta
