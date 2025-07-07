@@ -2,7 +2,7 @@ nextflow.enable.dsl = 2
 
 /* PARAMETERS */
 
-params.bam_dir   = "${baseDir}/bams"      // directory with .bam & .bai
+params.bam_dir   = "${baseDir}/bams/scramblebam"      // directory with .bam & .bai
 params.ref_dir   = "${baseDir}/reference"      // directory with reference genome
 params.truth_vcf = "${baseDir}/truth/test.vcf" // truth VCF
 params.outdir    = "${baseDir}/results"        // destination root

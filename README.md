@@ -108,6 +108,21 @@ NOTE: `-d 10000` flag used here solely because of the tiny data we are using for
 
 > Melt is closed-source and only free for research purposes!
 
+## MOBSTER
+
+Created in 2014, written in Java. Similar idea to others: find discordant and split-reads in input BAM file -> align to custom Mobilome.
+
+- Discordant reads which have at least 1 uniquely mapped read: other read used to anchor the possible insertion event. The mates of anchoring readsare mapped to the mobilome.
+- If both reads are uniquely mapped to reference, both will be aligned to the mobilome.
+- If read is clipped, clipped sequence is mapped to mobilome and investigated for a poly-A or poly-T stretch.
+
+Discordant & SRs are CLUSTERED according to things like the anchor seqs, whether they are 5' or 3', what ME  family they map to. 
+
+Filter where <5 supporting reads. 
+
+Mobster's mobilome uses a subset of RepBase consensus sequences - **54 MEs thought to be active in humans**
+- May be OUTDATED
+
 --------------------
 
 # NOTE FOR ACTUAL VALIDATION
