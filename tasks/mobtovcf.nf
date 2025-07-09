@@ -11,7 +11,7 @@ process MOBTOVCF {
 
     script:
     """
-    java -jar MobsterVCF-0.0.1-SNAPSHOT.jar \
+    java -jar /mobstertovcf/MobsterVCF-0.0.1-SNAPSHOT.jar \
       -file ${mob_txt_file.getName()} \
       -out ${mob_txt_file.baseName}.vcf
     """

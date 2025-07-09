@@ -38,9 +38,7 @@ workflow {
         MELT(bam_pairs, ref_ch)
 
     if (params.tools.contains('mobster')) {
-        MOBSTER(bam_pairs, ref_ch)
-
-        // logic to define mob_txt_ch
+        mob_txt_ch = MOBSTER(bam_pairs, ref_ch)
     
         MOBTOVCF(mob_txt_ch)
     }
