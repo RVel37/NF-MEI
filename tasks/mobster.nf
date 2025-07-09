@@ -9,7 +9,7 @@ process MOBSTER {
     path ref_ch
 
     output:
-    file "${bam.baseName}.txt" optional true
+    file "${bam.baseName}*.txt" optional true
 
     script:
     """

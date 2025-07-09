@@ -6,7 +6,7 @@ params.bam_dir   = "${baseDir}/bams/scramblebam"      // directory with .bam & .
 params.ref_dir   = "${baseDir}/reference/scrambleref"      // directory with reference genome
 params.truth_vcf = "${baseDir}/truth/test.vcf" // truth VCF
 params.outdir    = "${baseDir}/results"        // destination root
-params.tools     = ['mobster']          // names of MEI tools to run
+params.tools     = ['scramble','melt','mobster']          // names of MEI tools to run
 
 /* MODULE IMPORTS */
 include {SCRAMBLE} from './tasks/scramble.nf'
