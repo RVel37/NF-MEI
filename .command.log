@@ -1,0 +1,37 @@
+/home/snail/Documents/STP/MEIs/nf-benchmarking/work/9c/94d8b94d6b06f6110111e81081078b
+test.bam
+test.bam.bai
+test.clusters.txt
+test.fa
+test.fa.fai
+test.fa.nhr
+test.fa.nin
+test.fa.nsq
+test_MEIs.txt
+test_PredictedDeletions.txt
+Creating symlinks into /mobster/data
+changing to mobster dir
+License.txt
+README.md
+data
+dependency-reduced-pom.xml
+install.sh
+lib
+pom.xml
+resources
+src
+target
+test
+test_clusters.bam
+test_files
+and now the data dir
+test.bai
+test.bam
+test.clusters.txt
+test.fa
+test.fa.fai
+test.fa.nhr
+test.fa.nin
+test.fa.nsq
+test_MEIs.txt
+test_PredictedDeletions.txt

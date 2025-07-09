@@ -13,32 +13,42 @@ process MOBSTER {
 
     script:
     """
-    mkdir -p mobster/data/bams mobster/data/reference mobster/data/results
+    pwd
+    ls
 
-    # symlink inputs
+    # MOBSTER only runs correctly if inputs are in a /mobster subdir.
+    # thus, create subdir with symlinks to data
 
-    ln -s ${bam} mobster/data/bams/${bam.baseName}.bam
-    ln -s ${bai} mobster/data/bams/${bam.baseName}.bam.bai
-    ln -s ${ref_ch} mobster/data/reference/
+    echo "Creating symlinks into /mobster/data"
+    mkdir -p /mobster/data
+    ln -s ${bam} /mobster/data/${bam.baseName}.bam
+    ln -s ${bai} /mobster/data/${bam.baseName}.bai
+    ln -s ${ref_ch}* /mobster/data/
 
-    fasta=\$(ls mobster/data/reference | grep -E '\\.fa(sta)?\$' | head -n1)
-    bam_path=\$(readlink -f ${bam})
 
-    # change dir & alter Mobster.properties to take grch38 reference
-    
-    cd mobster/
-    sed -i 's|repmask/hg19_alul1svaerv.rpmsk|repmask/alu_l1_herv_sva_other_grch38_accession_ucsc.rpmsk|' \$(pwd)/lib/Mobster.properties
+    echo "changing to mobster dir"
+    cd /mobster
+    ls
 
-    cd data/
+    echo "and now the data dir"
+    cd data; ls
 
-    java -Xmx8G -cp target/MobileInsertions-0.2.4.1.jar org.umcn.me.pairedend.Mobster \
-    -properties lib/Mobster.properties \
-    -in "data/bams/${bam.baseName}.bam" \
-    -sn "${bam.baseName}" \
-    -out "results/${bam.baseName}"
-    
-    # rename VCF
-    cp results/${bam.baseName}.vcf ${bam.baseName}.mobster.vcf
+    # change mobster properties from hg19 to 38
+    sed -i 's|repmask/hg19_alul1svaerv.rpmsk|repmask/alu_l1_herv_sva_other_grch38_accession_ucsc.rpmsk|' /mobster/lib/Mobster.properties
+
+    # RUN MOBSTER
+    echo "running mobster..."
+
+    cd /mobster/data
+
+    java -Xmx8G \
+    -cp ../target/MobileInsertions-0.2.4.1.jar \
+    org.umcn.me.pairedend.Mobster \
+    -properties ../lib/Mobster.properties \
+    -in ../data/${bam.baseName}.bam \
+    -sn ${bam.baseName} \
+    -out ${bam.baseName}
+
 
     """
 

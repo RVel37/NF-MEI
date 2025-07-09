@@ -137,8 +137,8 @@ root@c0a8b1f2b9ff:/mobster/1kgp# history
     7  # it worked
     8  clear
     9  history
-
 ```
+When making this task, the difficulty came from needing to run it in a /mobster subdirectory because the Mobster.properties file includes relative paths. 
 
 --------------------
 

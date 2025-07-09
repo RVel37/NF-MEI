@@ -22,8 +22,6 @@ process SCRAMBLE {
     # absolute path - needed for bioconductor
     fasta_file=\$(readlink -f "\$fasta_file")
 
-    find / -name cluster_identifier 2>/dev/null
-
     ### Step 1: Run clustering on the input BAM file
     cluster_identifier $bam > ${bam.baseName}.clusters.txt
 
