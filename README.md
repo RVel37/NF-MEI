@@ -106,6 +106,8 @@ java -jar MELTv2.0.5_patch/MELT.jar Single -bamfile data/bams/test.bam -h data/r
 ```
 NOTE: `-d 10000` flag used here solely because of the tiny data we are using for interactive tests. Tells MELT to include any contig >= 10 000 bp, default is 1 000 000 bp. SHOULD GET RID ENTIRELY FOR TESTING WGS/WES
 
+MELT runs each MEI type INDEPENDENTLY. This means it produces 3 VCFs per sample
+
 > Melt is closed-source and only free for research purposes!
 
 ## MOBSTER
@@ -122,6 +124,21 @@ Filter where <5 supporting reads.
 
 Mobster's mobilome uses a subset of RepBase consensus sequences - **54 MEs thought to be active in humans**
 - May be OUTDATED
+
+```bash
+# history from terminal
+root@c0a8b1f2b9ff:/mobster/1kgp# history
+    1  cd mobster/1kgp/; mkdir results
+    2  sed -i 's|repmask/hg19_alul1svaerv.rpmsk|repmask/alu_l1_herv_sva_other_grch38_accession_ucsc.rpmsk|' lib/Mobster.properties
+    3  cd ..
+    4  sed -i 's|repmask/hg19_alul1svaerv.rpmsk|repmask/alu_l1_herv_sva_other_grch38_accession_ucsc.rpmsk|' lib/Mobster.properties
+    5  cd 1kgp/
+    6  java -Xmx8G -cp ../target/MobileInsertions-0.2.4.1.jar org.umcn.me.pairedend.Mobster   -properties ../lib/Mobster.properties   -in HG01879.exome.bam   -sn HG01879   -out results/HG01879
+    7  # it worked
+    8  clear
+    9  history
+
+```
 
 --------------------
 

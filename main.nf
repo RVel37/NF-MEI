@@ -3,14 +3,15 @@ nextflow.enable.dsl = 2
 /* PARAMETERS */
 
 params.bam_dir   = "${baseDir}/bams/scramblebam"      // directory with .bam & .bai
-params.ref_dir   = "${baseDir}/reference"      // directory with reference genome
+params.ref_dir   = "${baseDir}/reference/scrambleref"      // directory with reference genome
 params.truth_vcf = "${baseDir}/truth/test.vcf" // truth VCF
 params.outdir    = "${baseDir}/results"        // destination root
-params.tools     = ['scramble','melt']          // names of MEI tools to run
+params.tools     = ['scramble','melt','mobster']          // names of MEI tools to run
 
 /* MODULE IMPORTS */
 include {SCRAMBLE} from './tasks/scramble.nf'
 include {MELT} from './tasks/melt.nf'
+include {MOBSTER} from './tasks/mobster.nf'
 
 workflow {
 
@@ -34,5 +35,8 @@ workflow {
     
     if(params.tools.contains('melt'))
         MELT(bam_pairs, ref_ch)
+
+    if (params.tools.contains('mobster'))
+        MOBSTER(bam_pairs, ref_ch)
 
 }

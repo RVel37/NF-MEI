@@ -10,8 +10,8 @@ process SCRAMBLE {
     path(ref_ch)
 
     output:
-    file("${bam.baseName}.clusters.txt")
-    file("${bam.baseName}.scramble.vcf")
+    file("${bam.baseName}.clusters.txt") optional true
+    file("${bam.baseName}.scramble.vcf") optional true
 
     script:
     """
