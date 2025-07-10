@@ -3,5 +3,5 @@ reference/*
 truth/*
 .nextflow.log*
 .nextflow/
-results
+results/*
 work

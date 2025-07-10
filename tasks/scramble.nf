@@ -7,23 +7,20 @@ process SCRAMBLE {
 
     input:
     tuple path(bam), path(bai)
-    path(ref_ch) 
-    path(truth_vcf)
+    path(ref_ch)
 
     output:
-    file("${bam.baseName}.clusters.txt")
-    file("${bam.baseName}.scramble.vcf")
+    file("${bam.baseName}.clusters.txt") optional true
+    file("${bam.baseName}.scramble.vcf") optional true
 
     script:
     """
-    # find the fasta file among the staged reference files
+    # find the fasta file in the reference directory
     fasta_file=\$(ls ${ref_ch} | grep -E '\\.fa(sta)?\$' | head -n1)
     [[ -z \$fasta_file ]] && { echo 'ERROR: no fasta'; exit 1; }
     
-    # absolute path
+    # absolute path - needed for bioconductor
     fasta_file=\$(readlink -f "\$fasta_file")
-
-    find / -name cluster_identifier 2>/dev/null
 
     ### Step 1: Run clustering on the input BAM file
     cluster_identifier $bam > ${bam.baseName}.clusters.txt
@@ -35,7 +32,8 @@ process SCRAMBLE {
       --install-dir /scramble/cluster_analysis/bin \\
       --mei-refs /scramble/cluster_analysis/resources/MEI_consensus_seqs.fa \\
       --ref "\$fasta_file" \\
-      --eval-meis
+      --eval-meis  \\
+      --eval-dels 
 
     mv ${bam.baseName}.vcf ${bam.baseName}.scramble.vcf
     """
