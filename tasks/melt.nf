@@ -31,11 +31,11 @@ EOF
 
   java -jar /MELT/MELTv2.0.5_patch/MELT.jar Single \
       -bamfile "/data/${bam.baseName}.bam" \
-      -h /data/reference/"\$fasta" \
+      -h /data/"\$fasta" \
       -t /data/reference/mei_list.txt \
       -w "\$(pwd)" \
       -n /MELT/MELTv2.0.5_patch/add_bed_files/Hg38/Hg38.genes.bed \
-      -c 30 -d 10000 \
+      -c 15 -d 10000 \
     > melt.log 2>&1 || true
 
     echo "printing output:"

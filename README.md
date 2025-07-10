@@ -125,20 +125,27 @@ Filter where <5 supporting reads.
 Mobster's mobilome uses a subset of RepBase consensus sequences - **54 MEs thought to be active in humans**
 - May be OUTDATED
 
-```bash
-# history from terminal
-root@c0a8b1f2b9ff:/mobster/1kgp# history
-    1  cd mobster/1kgp/; mkdir results
-    2  sed -i 's|repmask/hg19_alul1svaerv.rpmsk|repmask/alu_l1_herv_sva_other_grch38_accession_ucsc.rpmsk|' lib/Mobster.properties
-    3  cd ..
-    4  sed -i 's|repmask/hg19_alul1svaerv.rpmsk|repmask/alu_l1_herv_sva_other_grch38_accession_ucsc.rpmsk|' lib/Mobster.properties
-    5  cd 1kgp/
-    6  java -Xmx8G -cp ../target/MobileInsertions-0.2.4.1.jar org.umcn.me.pairedend.Mobster   -properties ../lib/Mobster.properties   -in HG01879.exome.bam   -sn HG01879   -out results/HG01879
-    7  # it worked
-    8  clear
-    9  history
-```
 When making this task, the difficulty came from needing to run it in a /mobster subdirectory because the Mobster.properties file includes relative paths. 
+
+## DEEPMEI
+
+The Docker version does not run as advertised in the github readme for two reasons.
+1. From looking through the bash script, it seems to append `.bam` to my input (which it treats as the basename). It then can't find `sample.bam.bam`. I think specifying -o (output file name) is the solution as it will treat this as the basename instead. 
+2. It expects to find inputs in a specific subdir `/root/DeepMEI/final_vcf/batch_cdgc/`. 
+
+To solve this:
+
+- I first ran
+`docker run -it -v /home/dnanexus/data:/root/data/ -w /root xuxiaofeiscu/deepmei:latest /bin/bash`
+
+- then inside the container
+```
+mkdir -p /root/DeepMEI/final_vcf/batch_cdgc/
+cp /root/data/deepmei_input/HG01879.bam /root/DeepMEI/final_vcf/batch_cdgc/
+cp /root/data/deepmei_input/HG01879.bam.bai /root/DeepMEI/final_vcf/batch_cdgc/
+./DeepMEI/DeepMEI -i /root/data/deepmei_input/HG01879.bam -r 38 -w /root/data/ -o HG01879
+```
+(a better solution if we opt to use this tool would be to fix the bash script and create own docker image. The tool has an MIT license so it is fine to do so)
 
 --------------------
 
