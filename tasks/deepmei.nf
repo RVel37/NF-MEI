@@ -19,10 +19,18 @@ process DEEPMEI {
     ln -s \$(readlink -f ${bam}) /root/DeepMEI/final_vcf/batch_cdgc/${bam.baseName}.bam
     ln -s \$(readlink -f ${bai}) /root/DeepMEI/final_vcf/batch_cdgc/${bam.baseName}.bai
     ln -s \$(readlink -f ${ref_ch})* /root/DeepMEI/final_vcf/batch_cdgc/
-    echo "\n\n\nchanging to input dir *****"
-    cd /root/DeepMEI/final_vcf/batch_cdgc/
-    ls
+    
+    echo "here is the command: /root/DeepMEI/DeepMEI -i ${bam} -r 38 -w \$(pwd) -o ${bam.baseName}"
 
+    /root/DeepMEI/DeepMEI -i ${bam} -r 38 -w \$(pwd) -o ${bam.baseName}
+
+    OUTDIR=\$(pwd)/DeepMEI_output/${bam.baseName}
+    VCF_FILE="\${OUTDIR}/${bam.baseName}.vcf"
+    
+    if [ -f "\$VCF_FILE" ]; then
+        mv "\$VCF_FILE" "${bam.baseName}.deepmei.vcf"
+    else
+        echo "\nNo VCF found!"
+    fi
     """
-
 }

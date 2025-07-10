@@ -147,6 +147,8 @@ cp /root/data/deepmei_input/HG01879.bam.bai /root/DeepMEI/final_vcf/batch_cdgc/
 ```
 (a better solution if we opt to use this tool would be to fix the bash script and create own docker image, instead of hardcoding hotfixes in the NF process. The tool has an MIT license.)
 
+DeepMEI's outputs go in <workingdir specified in -o>/DeepMEI_output/
+
 --------------------
 
 # NOTE FOR ACTUAL VALIDATION
