@@ -6,13 +6,14 @@ params.bam_dir   = "${baseDir}/bams/scramblebam"      // directory with .bam & .
 params.ref_dir   = "${baseDir}/reference/scrambleref"      // directory with reference genome
 params.truth_vcf = "${baseDir}/truth/test.vcf" // truth VCF
 params.outdir    = "${baseDir}/results"        // destination root
-params.tools     = ['scramble','melt','mobster','mobtovcf']
+params.tools     = ['scramble','melt','mobster','mobtovcf','deepmei']
 
 /* MODULE IMPORTS */
 include {SCRAMBLE} from './tasks/scramble.nf'
 include {MELT} from './tasks/melt.nf'
 include {MOBSTER} from './tasks/mobster.nf'
 include {MOBTOVCF} from './tasks/mobtovcf.nf'
+include {DEEPMEI} from './tasks/deepmei.nf'
 
 workflow {
 
@@ -42,5 +43,8 @@ workflow {
     
         MOBTOVCF(mob_txt_ch)
     }
+
+    if (params.tools.contains('deepmei'))
+        DEEPMEI(bam_pairs, ref_ch)
 
 }
