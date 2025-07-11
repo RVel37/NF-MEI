@@ -80,18 +80,6 @@ Output:
 - tab delim txt file `test.clusters.txt` with clipped cluster consensus sequences
 - VCF (if `ref.fa` provided)
 
-30 June:
-Reference.fa for nextflow is currently test.fa provided in the scramble/validation directory. (`--ref ${ref_dir}/test.fa`) May want to change this to the standard GRCh38 reference? 
-
-### SCRAMBLE ISSUES
-Had significant difficulty figuring out how to pass in the reference fasta file, despite channels working correctly. Turns out this issue was specific to how `SCRAMble.R` handles paths. Issue was resolved in slightly unorthodox way:
-```bash
-    # absolute path
-    fasta_file=\$(readlink -f "\$fasta_file")
-```
-Where we provide an absolute path within the script. Unsure if this will need further corrections for DNAnexus. 
-
-## MELT
 
 Concatenate all the MEI reference zip files
 ```bash
@@ -120,7 +108,7 @@ Created in 2014, written in Java. Similar idea to others: find discordant and sp
 
 Discordant & SRs are CLUSTERED according to things like the anchor seqs, whether they are 5' or 3', what ME  family they map to. 
 
-Filter where <5 supporting reads. 
+Filters where <5 supporting reads. 
 
 Mobster's mobilome uses a subset of RepBase consensus sequences - **54 MEs thought to be active in humans**
 - May be OUTDATED
@@ -128,6 +116,8 @@ Mobster's mobilome uses a subset of RepBase consensus sequences - **54 MEs thoug
 When making this task, the difficulty came from needing to run it in a /mobster subdirectory because the Mobster.properties file includes relative paths. 
 
 ## DEEPMEI
+
+Most recently developed tool. Uses most complicated algorithm out of the tools we're examining (tensorflow)
 
 The Docker version does not run as advertised in the github readme for two reasons.
 1. From looking through the bash script, it seems to append `.bam` to my input (which it treats as the basename). It then can't find `sample.bam.bam`. I think specifying -o (output file name) is the solution as it will treat this as the basename instead. 
