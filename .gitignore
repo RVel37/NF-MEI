@@ -5,3 +5,7 @@ truth/*
 .nextflow/
 results/*
 work
+
+refs/*
+inputs/*
+results/*
