@@ -1,12 +1,6 @@
 nextflow.enable.dsl = 2
 
-/* PARAMETERS */
-
-params.bam_dir   = "${baseDir}/bams/scramblebam"      // directory with .bam & .bai
-params.ref_dir   = "${baseDir}/reference/scrambleref"      // directory with reference genome
-params.truth_vcf = "${baseDir}/truth/test.vcf" // truth VCF
-params.outdir    = "${baseDir}/results"        // destination root
-params.tools     = ['scramble','melt','mobster','mobtovcf','deepmei']
+/* Parameters located in nextflow.config */
 
 /* MODULE IMPORTS */
 include {SCRAMBLE} from './tasks/scramble.nf'
@@ -18,18 +12,14 @@ include {DEEPMEI} from './tasks/deepmei.nf'
 workflow {
 
     // Pair each bam with corresponding bai
-    Channel
-        .fromPath("${params.bam_dir}/*.bam")                // emit every bam in folder
-        .map { bam -> tuple(bam, file("${bam}.bai")) }      // match bam to bai
-        .set { bam_pairs }
+    bam_pairs = Channel
+            .from(params.bams)
+            .map { pair -> tuple(file(pair[0]), file(pair[1])) }
 
-    ref_ch = Channel.fromPath("${params.ref_dir}/*").collect()
-    
-    // truth vcf channel
-    Channel
-        .value(file(params.truth_vcf))
-        .set { truth_vcf_ch }
-
+    ref_ch = Channel
+        .from(params.refs)       // emit each file
+        .map { file(it) }        // treat each string as a file
+        .collect()               // gather into single list
 
     // PROCESSES
     if(params.tools.contains('scramble'))
