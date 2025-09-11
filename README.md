@@ -144,6 +144,22 @@ DeepMEI's outputs go in <workingdir specified in -o>/DeepMEI_output/
 # NOTE FOR ACTUAL VALIDATION
 
 The HG002 BAMs are accessed from the NIH FTP site. Specifically these are the Illumina Novoalign 2x250, 75x BAMs.
-The readme states the GRCh38 reference file is available [here](ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz)
+The readme states the GRCh38 reference file is available here: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz
 
+# RUNNING ON DNANEXUS
 
+https://documentation.dnanexus.com/user/running-apps-and-workflows/running-nextflow-pipelines#running-a-nextflow-pipeline-executable-app-or-applet
+
+From command line: 
+
+1. build:
+`dx build --nextflow`
+
+2. run:
+(modify applet and output names)
+```bash
+dx run project-J00J2YQ49jJKz0Xq6yB4qB4x:applet-J2JYzXj49jJJ2b2fZKP1xyZx \
+> -i debug=true \
+> --destination UsrRay:/meis/outputs/wf1_1kgp \
+> --brief -y
+```
