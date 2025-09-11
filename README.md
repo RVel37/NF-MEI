@@ -148,6 +148,8 @@ The readme states the GRCh38 reference file is available here: ftp://ftp.ncbi.nl
 
 # RUNNING ON DNANEXUS
 
+https://documentation.dnanexus.com/user/running-apps-and-workflows/running-nextflow-pipelines#running-a-nextflow-pipeline-executable-app-or-applet
+
 From command line: 
 
 1. build:
