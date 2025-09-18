@@ -2,22 +2,6 @@
 
 Tools to include: Scramble, MELT, Mobster, DeepMEI, TEMP2, Xtea
 
-# Data locations
-
-IGSR (international genome sample resource) - provides open data from range of sources including 1KGP.
-
-
-https://www.internationalgenome.org/data
-
-
-https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/
-
-
-Readme for 1kgp phase 3 alignment pipeline (bwamem > samtools > gatk3 > cramtool)
-https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/README.1000genomes.GRCh38DH.alignment
-
-
-https://www.ncbi.nlm.nih.gov/dbvar/studies/nstd144/download/
 
 ----------------------------------
 # General
@@ -90,13 +74,12 @@ cat <<EOF > data/reference/mei_list.txt
 EOF
 ```
 ```bash
-java -jar MELTv2.0.5_patch/MELT.jar Single -bamfile data/bams/test.bam -h data/reference/test.fa -t data/reference/mei_list.txt -w data/results/ -n MELTv2.0.5_patch/add_bed_files/Hg38/Hg38.genes.bed -c 30 -d 10000
+java -jar MELTv2.0.5_patch/MELT.jar Single -bamfile data/bams/test.bam -h data/reference/test.fa -t data/reference/mei_list.txt -w data/results/ -n MELTv2.0.5_patch/add_bed_files/Hg38/Hg38.genes.bed -c 30 
 ```
-NOTE: `-d 10000` flag used here solely because of the tiny data we are using for interactive tests. Tells MELT to include any contig >= 10 000 bp, default is 1 000 000 bp. SHOULD GET RID ENTIRELY FOR TESTING WGS/WES
 
 MELT runs each MEI type INDEPENDENTLY. This means it produces 3 VCFs per sample
 
-> Melt is closed-source and only free for research purposes!
+> Melt is closed-source and only free for research purposes
 
 ## MOBSTER
 
