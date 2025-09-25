@@ -9,13 +9,15 @@ Tools to include: Scramble, MELT, Mobster, DeepMEI, TEMP2, Xtea
 - Split reads: individual reads aligning to 2+ separate locations - indicates the presence of a breakpoint
 
 # TEST DATA
-We are using scramble's `test.bam` and `test.bam.bai` files as test runs (to configure pipeline) for several reasons:
+Used scramble's `test.bam` and `test.bam.bai` files as test runs to configure pipeline for several reasons:
 - Small and fast: files cover small region (chr3:70,000,000-71,000,000), so they run quickly and are easy to handle.
 - Reproducible: They are distributed with the tool, so anyone can use the same data for comparison or debugging.
 - Known output: Expected outputs are well-documented, making it easy to check if pipeline/other MEI tools are working as expected.
 
 Limitations:
-Test files are fine for basic benchmarking/testing pipeline, but won't represent real-world dataset size and complexity. **Will use a 1kGP Exome for further testing, as the reference genome provided by scramble's validation directory appears to be incompatible with MELT.**
+Test files are fine for basic benchmarking/testing pipeline, but won't represent real-world dataset size and complexity. 
+
+**CURRENTLY: using an exome for further testing, as the reference genome provided by scramble's validation directory appears to be incompatible with most other tools.**
 
 For final benchmarking will use the HG002 data + internal BAMs from NHS.
 
@@ -31,7 +33,7 @@ Nextflow comes wih in-built wall clock time and memory usage tracking. try:
 `nextflow run main.nf -with-report report.html -with-trace trace.txt -with-timeline timeline.html -with-dag flowchart.png`
 
 # evaluating deletions
-Provided as optional arg by MELT, SCRAMble, ... 
+Provided as optional arg by MELT + SCRAMble
 Choosing to add this in, despite NHS pipelines already having a dedicated CNV caller. MEIs often cause small deletions/rearrangements near insertion sites -> detecting deletions helps find breakpoints and improve MEI genotyping. As the tools carry out clustering and local assembly around candidate MEI sites, they may catch these deletions with greater accuracy than general CNV callers.
 
 ----------------------------------
@@ -79,7 +81,7 @@ java -jar MELTv2.0.5_patch/MELT.jar Single -bamfile data/bams/test.bam -h data/r
 
 MELT runs each MEI type INDEPENDENTLY. This means it produces 3 VCFs per sample
 
-> Melt is closed-source and only free for research purposes
+> Melt is closed-source and only free for research purposes(?)
 
 ## MOBSTER
 
@@ -89,12 +91,12 @@ Created in 2014, written in Java. Similar idea to others: find discordant and sp
 - If both reads are uniquely mapped to reference, both will be aligned to the mobilome.
 - If read is clipped, clipped sequence is mapped to mobilome and investigated for a poly-A or poly-T stretch.
 
-Discordant & SRs are CLUSTERED according to things like the anchor seqs, whether they are 5' or 3', what ME  family they map to. 
+Discordant & SRs are clustered according to things like the anchor seqs, whether they are 5' or 3', what ME  family they map to. 
 
 Filters where <5 supporting reads. 
 
 Mobster's mobilome uses a subset of RepBase consensus sequences - **54 MEs thought to be active in humans**
-- May be OUTDATED
+- May be outdated
 
 When making this task, the difficulty came from needing to run it in a /mobster subdirectory because the Mobster.properties file includes relative paths. 
 
@@ -118,31 +120,7 @@ cp /root/data/deepmei_input/HG01879.bam /root/DeepMEI/final_vcf/batch_cdgc/
 cp /root/data/deepmei_input/HG01879.bam.bai /root/DeepMEI/final_vcf/batch_cdgc/
 ./DeepMEI/DeepMEI -i /root/data/deepmei_input/HG01879.bam -r 38 -w /root/data/ -o HG01879
 ```
-(a better solution if we opt to use this tool would be to fix the bash script and create own docker image, instead of hardcoding hotfixes in the NF process. The tool has an MIT license.)
 
 DeepMEI's outputs go in <workingdir specified in -o>/DeepMEI_output/
 
---------------------
 
-# NOTE FOR ACTUAL VALIDATION
-
-The HG002 BAMs are accessed from the NIH FTP site. Specifically these are the Illumina Novoalign 2x250, 75x BAMs.
-The readme states the GRCh38 reference file is available here: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz
-
-# RUNNING ON DNANEXUS
-
-https://documentation.dnanexus.com/user/running-apps-and-workflows/running-nextflow-pipelines#running-a-nextflow-pipeline-executable-app-or-applet
-
-From command line: 
-
-1. build:
-`dx build --nextflow`
-
-2. run:
-(modify applet and output names)
-```bash
-dx run project-J00J2YQ49jJKz0Xq6yB4qB4x:applet-J2JYzXj49jJJ2b2fZKP1xyZx \
-> -i debug=true \
-> --destination UsrRay:/meis/outputs/wf1_1kgp \
-> --brief -y
-```
