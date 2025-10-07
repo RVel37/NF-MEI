@@ -1,6 +1,6 @@
 > This file (readme) currently consists of notes to myself. To be cleaned up and rewritten.
 
-Tools to include: Scramble, MELT, Mobster, DeepMEI, TEMP2, Xtea
+Tools to include: Scramble, MELT, Mobster, DeepMEI, Xtea
 
 
 ----------------------------------
